@@ -28,17 +28,29 @@ node -v; pnpm -v; docker -v; docker compose version
 
 O Docker Desktop precisa estar aberto. Teste: `docker info --format "{{.ServerVersion}}"` deve mostrar a versão.
 
-## 3. Criar o arquivo `.env`
+## 2.1. Clonar o repositório
 
-O `.env` guarda senhas e **nunca vai para o Git**. Ele é gerado a partir do `.env.example`, trocando os valores `TROQUE_*` por segredos aleatórios.
-
-Opção rápida (PowerShell, na raiz do projeto): copie `.env.example` para `.env` e substitua cada `TROQUE_*` por um valor aleatório, por exemplo gerado com:
+Escolha uma pasta **fora do OneDrive** (por exemplo `C:\dev`): o OneDrive tenta sincronizar a pasta `node_modules` (milhares de arquivos), o que deixa tudo lento e pode gerar erros.
 
 ```powershell
-node -e "console.log(require('crypto').randomBytes(24).toString('hex'))"
+git clone https://github.com/Amt2525/projeto_web2.git
+cd projeto_web2
+pnpm install
 ```
 
-Regra: a senha em `POSTGRES_PASSWORD` deve ser a mesma usada dentro de `DATABASE_URL`.
+Os arquivos de texto usam quebra de linha LF em qualquer sistema (arquivo `.gitattributes`), para o Prettier não reclamar no Windows.
+
+## 3. Criar o arquivo `.env`
+
+O `.env` guarda senhas e **nunca vai para o Git**. Ele é gerado a partir do `.env.example`, trocando os valores `TROQUE_*` por segredos aleatórios. Na raiz do projeto:
+
+```powershell
+pnpm env:criar
+```
+
+O script ([scripts/criar-env.ps1](../../scripts/criar-env.ps1)) usa o gerador aleatório do sistema operacional, coloca a mesma senha em `POSTGRES_PASSWORD` e em `DATABASE_URL` e **não sobrescreve** um `.env` que já exista. Cada pessoa tem o seu `.env`, com segredos diferentes.
+
+Manualmente, a regra é: a senha de `POSTGRES_PASSWORD` precisa ser a mesma que aparece dentro de `DATABASE_URL`.
 
 ## 4. Subir o banco e o servidor de e-mail de teste
 

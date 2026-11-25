@@ -1,0 +1,9 @@
+# Força quebra de linha LF em todos os arquivos de texto, em qualquer sistema.
+# Sem isso, o Git no Windows converte para CRLF ao clonar e o Prettier (que espera LF)
+# reprova o `pnpm format:check`.
+* text=auto eol=lf
+
+# Arquivos binários: não converter.
+*.png binary
+*.jpg binary
+*.ico binary

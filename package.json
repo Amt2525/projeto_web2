@@ -5,6 +5,7 @@
   "packageManager": "pnpm@12.23.0",
   "description": "Plataforma de monitoramento de usinas fotovoltaicas (projeto acadêmico)",
   "scripts": {
+    "env:criar": "powershell -NoProfile -File scripts/criar-env.ps1",
     "db:up": "docker compose --env-file .env -f infra/docker-compose.yml up -d",
     "db:down": "docker compose --env-file .env -f infra/docker-compose.yml down",
     "db:status": "docker compose --env-file .env -f infra/docker-compose.yml ps",

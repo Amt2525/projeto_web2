@@ -1,6 +1,6 @@
 # ADR 0014 — Integração contínua (CI)
 
-**Status:** Aprovada. O workflow **ainda não foi executado no GitHub** (não há repositório remoto): ele foi validado apenas por simulação local.
+**Status:** Aprovada. A primeira execução no GitHub (25/11/2026, commit `e926dff`) passou nos três jobs.
 
 ## Contexto
 
@@ -21,4 +21,4 @@ O enunciado exige CI com verificação de código, lint, tipos, testes, build e 
 ## Consequências
 
 - Todo PR precisa passar nos três jobs. A proteção da `main` (exigir PR e CI verde) é configurada no site do GitHub.
-- Limitação: o CI nunca rodou de verdade. A primeira execução real pode revelar diferenças de ambiente (Linux × Windows). A simulação foi feita em cópia limpa no Windows, não em Linux.
+- **Diferença Windows × Linux encontrada fora do CI:** o CI (Linux) passou, mas um clone no Windows com `core.autocrlf=true` converte os arquivos para CRLF e o `pnpm format:check` reprovava 58 arquivos. Correção: arquivo `.gitattributes` com `* text=auto eol=lf`. Validado em um clone novo simulado. Moral: passar no CI não prova que funciona na máquina de cada integrante.
