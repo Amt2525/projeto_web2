@@ -12,6 +12,7 @@
     "db:generate": "pnpm --filter @solarsystem/backend db:generate",
     "db:migrate": "pnpm --filter @solarsystem/backend db:migrate",
     "db:deploy": "pnpm --filter @solarsystem/backend db:deploy",
+    "db:seed": "pnpm --filter @solarsystem/backend db:seed",
     "dev:backend": "pnpm --filter @solarsystem/backend dev",
     "dev:simulator": "pnpm --filter @solarsystem/simulator dev",
     "dev:frontend": "pnpm --filter @solarsystem/frontend dev",

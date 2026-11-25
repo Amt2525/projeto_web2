@@ -20,6 +20,25 @@ jobs:
     name: Qualidade (tipos, lint, formatação, testes)
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Os testes de integração precisam de um PostgreSQL de verdade. Este serviço existe só durante
+    # a execução do CI; a senha abaixo é descartável e não dá acesso a nada.
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: solarsystem
+          POSTGRES_PASSWORD: senha_descartavel_do_ci
+          POSTGRES_DB: solarsystem
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U solarsystem -d solarsystem"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Os testes criam o banco "solarsystem_test" a partir desta URL.
+      DATABASE_URL: postgresql://solarsystem:senha_descartavel_do_ci@localhost:5432/solarsystem
     steps:
       # As ações abaixo estão fixadas pelo hash do commit (mais seguro que a tag).
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -39,9 +58,6 @@ jobs:
 
       - name: Gerar o cliente do Prisma
         run: pnpm db:generate
-        env:
-          # Valor fictício: gerar o cliente não conecta ao banco.
-          DATABASE_URL: postgresql://usuario:senha@localhost:5432/ci
 
       - name: Verificar tipos
         run: pnpm typecheck

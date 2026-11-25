@@ -29,6 +29,8 @@ $texto = $texto.Replace('TROQUE_ESTA_SENHA', $senhaBanco)
 $texto = $texto.Replace('TROQUE_POR_SEGREDO_ALEATORIO_LONGO', (Novo-Segredo 48))
 $texto = $texto.Replace('TROQUE_POR_CHAVE_ALEATORIA', (Novo-Segredo 32))
 $texto = $texto.Replace('TROQUE_CHAVE_DE_DEMONSTRACAO', (Novo-Segredo 16))
+$texto = $texto.Replace('TROQUE_SENHA_DO_ADMIN_DEMO', (Novo-Segredo 16))
+$texto = $texto.Replace('TROQUE_SENHA_DO_TECNICO_DEMO', (Novo-Segredo 16))
 
 # Sem BOM e com quebras de linha LF, para o Docker Compose e o Node lerem sem problemas.
 [System.IO.File]::WriteAllText($destino, $texto, (New-Object System.Text.UTF8Encoding($false)))
