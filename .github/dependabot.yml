@@ -1,0 +1,19 @@
+version: 2
+
+updates:
+  # Dependências do projeto (pnpm workspace)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # Agrupa atualizações pequenas em um único PR, para não gerar excesso de PRs.
+      menores-e-correcoes:
+        update-types: [minor, patch]
+
+  # Versões das ações usadas no CI
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

@@ -1,0 +1,35 @@
+# Serviços de apoio ao desenvolvimento: PostgreSQL e Mailpit.
+# O back-end, o front-end e o simulador rodam fora do Docker (com pnpm).
+# Uso (a partir da raiz do projeto): pnpm db:up
+# Valores sensíveis vêm do arquivo .env (nunca escreva senhas aqui).
+
+name: solarsystem
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      # 127.0.0.1: só a própria máquina acessa o banco, não a rede local.
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:v1.34
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:1025:1025' # SMTP (a API envia e-mails para cá)
+      - '127.0.0.1:8025:8025' # Interface web para ler os e-mails
+
+volumes:
+  postgres_data:

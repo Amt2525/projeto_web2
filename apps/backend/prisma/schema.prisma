@@ -1,0 +1,34 @@
+// Modelo de dados do SolarSystem (Prisma).
+// Cada alteração aqui vira uma "migration" (arquivo SQL versionado em prisma/migrations).
+
+generator client {
+  provider = "prisma-client"
+  // Código gerado pelo Prisma a partir deste arquivo. Não é versionado (ver .gitignore).
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  TECNICO
+
+  @@map("user_role")
+}
+
+// Usuários do sistema. Não existe cadastro público: admins criam os usuários.
+model User {
+  id           String   @id @default(uuid(7)) @db.Uuid
+  email        String   @unique
+  name         String
+  // Hash Argon2id da senha. NUNCA guardar a senha em texto puro.
+  passwordHash String   @map("password_hash")
+  role         Role     @default(TECNICO)
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("users")
+}

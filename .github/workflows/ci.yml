@@ -1,0 +1,91 @@
+name: CI
+
+# Roda a cada push na main e em todo pull request.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Permissão mínima: o CI só lê o repositório.
+permissions:
+  contents: read
+
+# Se chegar um push novo na mesma branch, cancela a execução anterior.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualidade:
+    name: Qualidade (tipos, lint, formatação, testes)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # As ações abaixo estão fixadas pelo hash do commit (mais seguro que a tag).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # A versão do pnpm vem do campo "packageManager" do package.json.
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: pnpm
+
+      - name: Instalar dependências (exatamente as do pnpm-lock.yaml)
+        run: pnpm install --frozen-lockfile
+
+      - name: Gerar o cliente do Prisma
+        run: pnpm db:generate
+        env:
+          # Valor fictício: gerar o cliente não conecta ao banco.
+          DATABASE_URL: postgresql://usuario:senha@localhost:5432/ci
+
+      - name: Verificar tipos
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Verificar formatação
+        run: pnpm format:check
+
+      - name: Testes
+        run: pnpm test
+
+  auditoria:
+    name: Auditoria de dependências
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Falha se houver vulnerabilidade de severidade alta ou crítica.
+      - name: pnpm audit
+        run: pnpm audit --audit-level high
+
+  segredos:
+    name: Busca de segredos (Gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Histórico completo: um segredo apagado depois ainda estaria no histórico público.
+          fetch-depth: 0
+          persist-credentials: false
+      # Usamos a imagem oficial direto (a ação gitleaks-action pode exigir licença).
+      - name: Gitleaks
+        run: >
+          docker run --rm -v "${{ github.workspace }}:/repo"
+          ghcr.io/gitleaks/gitleaks:v8.30.1
+          git /repo --redact --verbose

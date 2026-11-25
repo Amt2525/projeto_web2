@@ -1,0 +1,29 @@
+# Dependências e builds
+node_modules/
+dist/
+build/
+coverage/
+.pnpm-store/
+
+# Código gerado pelo Prisma (recriado com pnpm db:generate)
+apps/backend/src/generated/
+
+# Segredos e ambiente local (NUNCA versionar)
+.env
+.env.*
+!.env.example
+
+# Logs e temporários
+*.log
+.DS_Store
+Thumbs.db
+
+# Testes e ferramentas
+playwright-report/
+test-results/
+.vite/
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/

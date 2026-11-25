@@ -1,0 +1,12 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+# Correção de vulnerabilidade (GHSA-7589-6fvf-x4pw, ReDoS no "effect"): o Prisma 7.10.1
+# fixa effect 3.20.0, que é vulnerável. Forçamos a versão corrigida da mesma série 3.x.
+# Remover quando o Prisma atualizar a dependência. Ver ADR 0013.
+overrides:
+  effect: '>=3.22.1 <4'
+allowBuilds:
+  '@prisma/engines': false
+  esbuild: false
+  prisma: false
