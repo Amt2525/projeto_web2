@@ -101,6 +101,16 @@ Na raiz do projeto:
 pnpm install
 ```
 
+Gerar o cliente do banco, criar as tabelas e os usuários de demonstração (com o `pnpm db:up` já executado e o `.env` criado):
+
+```powershell
+pnpm db:generate
+pnpm db:deploy
+pnpm db:seed
+```
+
+O primeiro cria o código do Prisma (não vai para o Git). O segundo aplica as migrations ao banco. O terceiro cria um admin e um técnico de **demonstração**; os e-mails e as senhas deles estão no seu `.env` (`SEED_*`), geradas aleatoriamente por `pnpm env:criar`. Para conferir as migrations: `pnpm --filter @solarsystem/backend db:status` deve dizer "Database schema is up to date!".
+
 Verificações (devem terminar sem erro):
 
 ```powershell
@@ -109,14 +119,7 @@ pnpm lint
 pnpm test
 ```
 
-Gerar o cliente do banco e criar as tabelas (com o `pnpm db:up` já executado):
-
-```powershell
-pnpm db:generate
-pnpm db:deploy
-```
-
-O primeiro cria o código do Prisma (não vai para o Git). O segundo aplica as migrations ao banco. Para conferir: `pnpm --filter @solarsystem/backend db:status` deve dizer "Database schema is up to date!".
+Os testes de integração **precisam do banco no ar** (`pnpm db:up`). Eles criam sozinhos um banco separado, `solarsystem_test`, e nunca tocam nos dados de desenvolvimento.
 
 Subir os três programas, **cada um em um terminal separado**:
 
