@@ -19,6 +19,14 @@ Modelo híbrido, que mantém a revogação:
 - **Troca de senha** e desativação de usuário revogam todas as sessões.
 - **Senhas:** Argon2id (biblioteca a validar no Windows); plano B bcrypt.
 
+## Implementação (Etapa 3A, 25/11/2026)
+
+- Biblioteca de senha: `argon2` 0.45.x (Argon2id, 64 MiB, 3 iterações, 1 thread). Script de instalação negado; funciona com binários pré-compilados (verificado).
+- Biblioteca de JWT: `jose` 6.x. HS256 fixo, `iss=solarsystem`, `aud=solarsystem-api`, claims `sub`, `role`, `sid`, `iat`, `exp`, validadas com Zod.
+- `sid` (id da sessão) = `family_id` da tabela `refresh_tokens`.
+- Banco: `refresh_tokens` guarda só o hash SHA-256 (CHECK de 64 caracteres hexadecimais); `users` ganhou `failed_login_attempts`, `locked_until` e `password_changed_at`.
+- Falta (Etapa 3B): rotas, cookies, CSRF, limite de tentativas, bloqueio de conta, verificação de sessão nas rotas sensíveis.
+
 ## Alternativas
 
 - **Sessão opaca em banco:** revogação imediata e mais simples. Era a recomendação inicial.

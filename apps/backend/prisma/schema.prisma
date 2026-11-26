@@ -20,15 +20,62 @@ enum Role {
 
 // Usuários do sistema. Não existe cadastro público: admins criam os usuários.
 model User {
-  id           String   @id @default(uuid(7)) @db.Uuid
-  email        String   @unique
-  name         String
+  id                  String    @id @default(uuid(7)) @db.Uuid
+  email               String    @unique
+  name                String
   // Hash Argon2id da senha. NUNCA guardar a senha em texto puro.
-  passwordHash String   @map("password_hash")
-  role         Role     @default(TECNICO)
-  isActive     Boolean  @default(true) @map("is_active")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  passwordHash        String    @map("password_hash")
+  role                Role      @default(TECNICO)
+  isActive            Boolean   @default(true) @map("is_active")
+  // Proteção contra força bruta: após muitas falhas seguidas, a conta é bloqueada por um tempo.
+  failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
+  lockedUntil         DateTime? @map("locked_until") @db.Timestamptz(3)
+  // Quando a senha foi trocada pela última vez (para auditoria e revogação de sessões).
+  passwordChangedAt   DateTime  @default(now()) @map("password_changed_at") @db.Timestamptz(3)
+  createdAt           DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
 
   @@map("users")
+}
+
+// Registro de auditoria: quem fez o quê e quando (eventos de segurança e ações sensíveis).
+// Nunca gravar senhas, tokens ou outros segredos aqui.
+model AuditLog {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  occurredAt DateTime @default(now()) @map("occurred_at") @db.Timestamptz(3)
+  // Pode ser nulo: uma tentativa de login com e-mail inexistente não tem usuário.
+  userId     String?  @map("user_id") @db.Uuid
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  ip         String?
+  userAgent  String?  @map("user_agent")
+  metadata   Json?
+
+  @@index([occurredAt])
+  @@index([userId, occurredAt])
+  @@map("audit_logs")
+}
+
+// Refresh tokens (ADR 0007). Guardamos apenas o HASH do token, nunca o token em si:
+// se o banco vazar, os tokens não podem ser usados.
+// Todos os tokens de um mesmo login formam uma "família" (familyId = id da sessão).
+model RefreshToken {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  familyId  String    @map("family_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(3)
+  // Preenchido quando o token é trocado por um novo (rotação). Se aparecer de novo = reuso = suspeita de roubo.
+  usedAt    DateTime? @map("used_at") @db.Timestamptz(3)
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
 }

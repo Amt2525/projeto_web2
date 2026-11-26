@@ -16,10 +16,11 @@ Instruções detalhadas de cada passo: [ambiente-windows.md](ambiente-windows.md
 | 8   | `pnpm db:up` e depois `pnpm db:status`                                                   | `postgres` e `mailpit` como `healthy`           |                  |
 | 9   | `pnpm db:generate`                                                                       | "Generated Prisma Client"                       |                  |
 | 10  | `pnpm db:deploy`                                                                         | "All migrations have been successfully applied" |                  |
+| 10b | `pnpm db:seed`                                                                           | "Criado: admin@..." e "Criado: tecnico@..."     |                  |
 | 11  | `pnpm typecheck`                                                                         | Sem erros                                       |                  |
 | 12  | `pnpm lint`                                                                              | Sem erros                                       |                  |
 | 13  | `pnpm format:check`                                                                      | "All matched files use Prettier code style!"    |                  |
-| 14  | `pnpm test`                                                                              | 11 testes passando (3 + 5 + 1 + 2)              |                  |
+| 14  | `pnpm test` (com o banco no ar: o teste cria o banco `solarsystem_test`)                 | 96 testes passando (12 + 81 + 1 + 2)            |                  |
 | 15  | `pnpm dev:backend` e abrir `http://127.0.0.1:3000/api/health`                            | JSON com `"status":"ok"`                        |                  |
 | 16  | `pnpm dev:simulator` e abrir `http://127.0.0.1:4010/health`                              | JSON com `"simulated":true`                     |                  |
 | 17  | `pnpm dev:frontend` e abrir `http://localhost:5173`                                      | Página "SolarSystem" com "API online"           |                  |

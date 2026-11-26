@@ -8,5 +8,6 @@ overrides:
   effect: '>=3.22.1 <4'
 allowBuilds:
   '@prisma/engines': false
+  argon2: false
   esbuild: false
   prisma: false

@@ -19,5 +19,6 @@ Formato: Contexto → Decisão → Alternativas → Consequências. Status: **Pr
 | [0013](0013-prisma-versao-e-configuracao.md) | Prisma: versão e configuração                          | Aprovada |
 
 | [0014](0014-integracao-continua.md) | Integração contínua (GitHub Actions) | Aprovada |
+| [0015](0015-seguranca-da-autenticacao.md) | Segurança da API de autenticação | Aprovada |
 
 Aprovações registradas a partir da resposta de Atos e Bryan na Etapa 1. Pendências que podem alterar detalhes estão em `docs/architecture/pendencias.md`.
