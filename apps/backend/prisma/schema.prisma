@@ -37,6 +37,7 @@ model User {
 
   refreshTokens RefreshToken[]
   auditLogs     AuditLog[]
+  plants        Plant[]
 
   @@map("users")
 }
@@ -78,4 +79,31 @@ model RefreshToken {
   @@index([familyId])
   @@index([expiresAt])
   @@map("refresh_tokens")
+}
+
+// Usinas fotovoltaicas cadastradas. Aqui entra só o CADASTRO; inversores, leituras e alarmes vêm na Etapa 5.
+// Potência em Wp (inteiro): a tela mostra em kWp. Ausência de dado é NULL, nunca zero.
+model Plant {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  name        String
+  clientName  String    @map("client_name")
+  // Capacidade instalada, em Wp (soma dos módulos). 75,5 kWp = 75500 Wp.
+  capacityWp  Int       @map("capacity_wp")
+  city        String
+  // Sigla da UF (2 letras maiúsculas).
+  state       String    @db.Char(2)
+  latitude    Decimal?  @db.Decimal(9, 6)
+  longitude   Decimal?  @db.Decimal(9, 6)
+  installedOn DateTime? @map("installed_on") @db.Date
+  // Desativar em vez de apagar: preserva o histórico.
+  isActive    Boolean   @default(true) @map("is_active")
+  // Quem cadastrou. Vira NULL se o usuário for removido (a usina continua existindo).
+  createdById String?   @map("created_by_id") @db.Uuid
+  createdBy   User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([isActive, name])
+  @@index([state])
+  @@map("plants")
 }

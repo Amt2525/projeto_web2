@@ -8,6 +8,8 @@ import { createAuthService } from './modules/auth/auth.service';
 import { authRoutes } from './modules/auth/auth.routes';
 import { createGuards } from './modules/auth/guards';
 import { createTokenService } from './modules/auth/tokens';
+import { createPlantsService } from './modules/plants/plants.service';
+import { plantsRoutes } from './modules/plants/plants.routes';
 
 export type AppDeps = {
   prisma: PrismaClient;
@@ -63,6 +65,7 @@ export function buildApp({ prisma, env, logger = false, now = () => new Date() }
   });
 
   app.register(authRoutes, { prefix: '/api/auth', env, service, tokens, now });
+  app.register(plantsRoutes, { prefix: '/api/plants', service: createPlantsService({ prisma }) });
 
   return app;
 }

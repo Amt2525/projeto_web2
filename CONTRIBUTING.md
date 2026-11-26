@@ -27,8 +27,8 @@ Exemplos: `feat(auth): adicionar login com e-mail e senha`, `fix(plants): rejeit
 
 1. Rodar localmente: `pnpm typecheck`, `pnpm lint`, `pnpm format:check` e `pnpm test`.
 2. Abrir o PR preenchendo o modelo (o que muda, como testar, checklist).
-3. **O outro integrante revisa.** Quem revisa precisa entender o código; se não entender, pergunta. Isso garante que os dois saibam explicar tudo.
-4. O CI precisa estar verde (tipos, lint, formatação, testes, auditoria e Gitleaks).
+3. **Autorrevisão:** com uma só conta, ninguém aprova o PR de outra pessoa. Antes do merge, leiam o diff na aba "Files changed" e confirmem o checklist do modelo, principalmente "Eu consigo explicar este código sem olhar". O guia de estudo da etapa serve de roteiro.
+4. O CI precisa estar verde (tipos, lint, formatação, testes, auditoria e Gitleaks). A `main` bloqueia o merge se algum falhar.
 5. Merge por _squash_ (um commit por PR). Apagar a branch depois.
 
 ## Conflitos
@@ -46,4 +46,4 @@ Antes da entrega, versões marcadas por tag (`v0.1.0`, `v0.2.0`...), seguindo o 
 
 ## Proteção da `main` (configuração no GitHub)
 
-Em _Settings → Branches_ da `main`: exigir pull request e exigir que as verificações do CI passem. Esta configuração é feita no site do GitHub, não no código.
+Já configurada no GitHub (ruleset `proteger-main`, ativo): pull request obrigatório (0 aprovações, pois há uma só conta), os três checks do CI exigidos e atualizados com a `main`, sem force push e sem exclusão. A configuração vive no site do GitHub, não no código.

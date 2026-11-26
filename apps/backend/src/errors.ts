@@ -25,6 +25,9 @@ export const erros = {
     ),
   csrf: () =>
     new AppError(403, 'REQUISICAO_NAO_AUTORIZADA', 'Requisição não autorizada pela origem.'),
+  naoEncontrado: () => new AppError(404, 'NAO_ENCONTRADO', 'Recurso não encontrado.'),
+  usinaDuplicada: () =>
+    new AppError(409, 'USINA_DUPLICADA', 'Já existe uma usina com este nome nesta cidade e UF.'),
   dadosInvalidos: (details: { field: string; message: string }[]) =>
     new AppError(400, 'DADOS_INVALIDOS', 'Os dados informados são inválidos.', details),
 };

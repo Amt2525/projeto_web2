@@ -2,7 +2,7 @@
 
 Plataforma web para monitoramento centralizado de usinas fotovoltaicas, com integração a plataformas de fabricantes por meio de adaptadores. Projeto acadêmico de Atos e Bryan (ADS).
 
-> **Status:** Etapa 2 (fundação) em andamento. Existe o esqueleto de cada programa (com `/health` e testes), mas **nenhuma funcionalidade de negócio ainda**: login, usinas e alarmes não foram implementados.
+> **Status:** fundação, autenticação (API e tela de login) e cadastro de usinas prontos e testados. **Ainda não existem** inversores, leituras, alarmes nem dados de produção (Etapa 5 em diante).
 
 ## Estrutura
 
@@ -19,7 +19,13 @@ infra/         docker-compose (PostgreSQL, Mailpit)
 
 ## Como rodar
 
-Veja [docs/setup/ambiente-windows.md](docs/setup/ambiente-windows.md).
+Com o Docker Desktop aberto, na pasta do projeto:
+
+```powershell
+pnpm dev
+```
+
+Esse comando sobe o banco, aplica as migrations e liga a API (porta 3000), o simulador (4010) e o site (5173). Abra http://localhost:5173. A primeira vez precisa de instalação: [docs/setup/ambiente-windows.md](docs/setup/ambiente-windows.md). Para parar: `Ctrl+C` e, se quiser desligar o banco, `pnpm db:down`.
 
 ## Documentação
 

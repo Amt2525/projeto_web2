@@ -44,7 +44,9 @@ export function criarPrismaDeTeste(): PrismaClient {
 }
 
 export async function limparBanco(prisma: PrismaClient) {
-  await prisma.$executeRawUnsafe('TRUNCATE TABLE "audit_logs", "refresh_tokens", "users" CASCADE');
+  await prisma.$executeRawUnsafe(
+    'TRUNCATE TABLE "plants", "audit_logs", "refresh_tokens", "users" CASCADE',
+  );
 }
 
 // O hash é calculado uma vez só: o Argon2 é lento de propósito e seria repetido em todo teste.
