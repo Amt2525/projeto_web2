@@ -21,5 +21,6 @@ Formato: Contexto → Decisão → Alternativas → Consequências. Status: **Pr
 | [0014](0014-integracao-continua.md) | Integração contínua (GitHub Actions) | Aprovada |
 | [0015](0015-seguranca-da-autenticacao.md) | Segurança da API de autenticação | Aprovada |
 | [0016](0016-front-end-autenticacao.md) | Front-end: autenticação e tela de login | Aprovada |
+| [0017](0017-cadastro-de-usinas.md) | Cadastro de usinas (Etapa 4) | Aprovada |
 
 Aprovações registradas a partir da resposta de Atos e Bryan na Etapa 1. Pendências que podem alterar detalhes estão em `docs/architecture/pendencias.md`.

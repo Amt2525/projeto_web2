@@ -60,8 +60,8 @@ Monorepo pnpm · monólito modular · TypeScript · Fastify + Zod · React + Vit
 
 ## Estado atual
 
-- **Na `main` e com CI verde:** Etapa 2 (fundação: monorepo, TypeScript 6, ESLint, Prettier, Vitest, Prisma 7 + PostgreSQL 18, Docker Compose, CI, Dependabot, Gitleaks), Etapas 3A e 3B (API de autenticação, ADR 0015) e Etapa 3C (tela de login, ADR 0016). PRs #1 e #2 integrados. 123 testes passando (shared 12, backend 81, simulador 1, frontend 29).
+- **Na `main` e com CI verde:** Etapa 2 (fundação: monorepo, TypeScript 6, ESLint, Prettier, Vitest, Prisma 7 + PostgreSQL 18, Docker Compose, CI, Dependabot, Gitleaks), Etapas 3A e 3B (API de autenticação, ADR 0015) e Etapa 3C (tela de login, ADR 0016). PRs #1 e #2 integrados (na `main`: 123 testes).
 - **Ambiente verificado na máquina de Atos:** Node 26.13.1, pnpm 12.23.0, Docker 29.9.3, PostgreSQL 18.7 e Mailpit v1.34 (`pnpm db:up`). No PowerShell desta ferramenta, o PATH precisa ser recarregado a cada chamada.
-- **Proposta, não aprovada nem implementada:** Etapa 4 (usinas), em `docs/architecture/proposta-etapa-04-usinas.md`. Aguarda as respostas de Atos às cinco perguntas do documento.
+- **Etapa 4 (cadastro de usinas) implementada e verificada, branch `feat/usinas`, AINDA NÃO enviada ao GitHub:** tabela `plants` (CHECKs + índice único nome/cidade/UF), API `/api/plants` (listar, ver, criar, editar com PUT, desativar/reativar), telas de lista, formulário e detalhe, 201 testes passando (shared 33, backend 113, simulador 1, frontend 54), 6 mutações detectadas, verificada no navegador. ADR 0017 e guia `docs/estudo/etapa-04-usinas.md`. Um commit já feito (`pnpm dev`, docs); o código da Etapa 4 está sem commit até Atos autorizar.
 - **Falta (requisitos pendentes):** "Esqueci minha senha" (requer e-mail no back-end), gestão de usuários (admin), Playwright, teste com leitor de tela, 2FA (futuro), limpeza periódica de sessões e logs, simulador com contrato real (Etapa 5). P10 (data da apresentação) ainda indefinida.
 - Ver `docs/setup/` e `docs/estudo/`.

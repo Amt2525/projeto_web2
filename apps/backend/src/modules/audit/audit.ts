@@ -8,7 +8,11 @@ export type AcaoAuditoria =
   | 'CONTA_BLOQUEADA'
   | 'LOGOUT'
   | 'REFRESH_REUTILIZADO'
-  | 'SENHA_ALTERADA';
+  | 'SENHA_ALTERADA'
+  | 'USINA_CRIADA'
+  | 'USINA_EDITADA'
+  | 'USINA_DESATIVADA'
+  | 'USINA_REATIVADA';
 
 export type ContextoRequisicao = { ip: string | null; userAgent: string | null };
 

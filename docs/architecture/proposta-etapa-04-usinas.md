@@ -1,6 +1,6 @@
 # Proposta — Etapa 4: gerenciamento de usinas
 
-> **Status: PROPOSTA, aguardando aprovação de Atos e Bryan.** Nada disto está implementado. Depois da aprovação, vira ADR 0017 e código.
+> **Status: APROVADA com os padrões recomendados e IMPLEMENTADA** (ver [ADR 0017](adr/0017-cadastro-de-usinas.md) e `docs/estudo/etapa-04-usinas.md`). Mudança em relação a este texto: a edição usa `PUT` (usina completa) em vez de `PATCH`. Mantido como registro da proposta original.
 
 ## Escopo (e o que fica de fora)
 
@@ -39,7 +39,7 @@
 | `GET /api/plants`                               | logado         | lista com `q`, `state`, `active`, `page`, `pageSize` (máx. 50) |
 | `GET /api/plants/:id`                           | logado         | detalhe                                                        |
 | `POST /api/plants`                              | ADMIN, TECNICO | cria                                                           |
-| `PATCH /api/plants/:id`                         | ADMIN, TECNICO | edita campos enviados                                          |
+| `PUT /api/plants/:id`                           | ADMIN, TECNICO | edita (corpo com a usina completa)                             |
 | `POST /api/plants/:id/deactivate` e `/activate` | ADMIN, TECNICO | desativa/reativa (nada é apagado)                              |
 
 Segurança: schemas Zod **estritos** (campos desconhecidos rejeitados; `created_by`, `is_active` e `id` nunca vêm do cliente em criação), UUID validado, busca parametrizada (Prisma), paginação com teto, resposta por DTO, auditoria de criar/editar/desativar. Cada criação/edição grava em `audit_logs` com o id da usina (sem dados sensíveis).

@@ -10,3 +10,16 @@ export {
   passwordSchema,
   senhaContemEmail,
 } from './password';
+export {
+  CAPACIDADE_MAX_KWP,
+  UFS,
+  kwpParaWp,
+  plantIdParamsSchema,
+  plantInputSchema,
+  plantListQuerySchema,
+  plantListResponseSchema,
+  plantResponseSchema,
+  ufSchema,
+  wpParaKwp,
+} from './plant';
+export type { PlantInput, PlantListQuery, PlantListResponse, PlantResponse } from './plant';

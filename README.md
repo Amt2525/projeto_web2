@@ -2,7 +2,7 @@
 
 Plataforma web para monitoramento centralizado de usinas fotovoltaicas, com integração a plataformas de fabricantes por meio de adaptadores. Projeto acadêmico de Atos e Bryan (ADS).
 
-> **Status:** fundação, API de autenticação e tela de login prontas e testadas. **Ainda não existem** usinas, alarmes nem dados de produção (Etapas 4 e seguintes).
+> **Status:** fundação, autenticação (API e tela de login) e cadastro de usinas prontos e testados. **Ainda não existem** inversores, leituras, alarmes nem dados de produção (Etapa 5 em diante).
 
 ## Estrutura
 

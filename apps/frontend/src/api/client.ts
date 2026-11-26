@@ -12,7 +12,7 @@ export class ApiError extends Error {
   }
 }
 
-type Opcoes = { method?: 'GET' | 'POST'; body?: unknown };
+type Opcoes = { method?: 'GET' | 'POST' | 'PUT'; body?: unknown };
 
 // Rotas em que um 401 NÃO deve disparar a renovação da sessão:
 // no login, 401 significa "senha errada"; e renovar a renovação ou o logout não faz sentido.
