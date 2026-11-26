@@ -1,44 +1,18 @@
-import { useEffect, useState } from 'react';
-import { healthResponseSchema } from '@solarsystem/shared';
+import { Route, Routes } from 'react-router';
+import { ProtectedRoute } from './auth/ProtectedRoute';
+import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
-type EstadoApi = 'verificando' | 'online' | 'offline';
-
+// Mapa das telas. Tudo dentro de <ProtectedRoute> exige login.
 export function App() {
-  const [estadoApi, setEstadoApi] = useState<EstadoApi>('verificando');
-
-  useEffect(() => {
-    // Evita atualizar o estado se o componente sair da tela antes da resposta chegar.
-    let ativo = true;
-
-    async function verificarApi() {
-      try {
-        const resposta = await fetch('/api/health');
-        const dados: unknown = await resposta.json();
-        // Valida o formato da resposta com o mesmo esquema que o back-end usa.
-        const valido = resposta.ok && healthResponseSchema.safeParse(dados).success;
-        if (ativo) setEstadoApi(valido ? 'online' : 'offline');
-      } catch {
-        if (ativo) setEstadoApi('offline');
-      }
-    }
-
-    void verificarApi();
-    return () => {
-      ativo = false;
-    };
-  }, []);
-
-  const textos: Record<EstadoApi, string> = {
-    verificando: 'Verificando a API...',
-    online: 'API online',
-    offline: 'API indisponível',
-  };
-
   return (
-    <main>
-      <h1>SolarSystem</h1>
-      <p>Monitoramento de usinas fotovoltaicas.</p>
-      <p role="status">{textos[estadoApi]}</p>
-    </main>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route index element={<HomePage />} />
+      </Route>
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }

@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+/* Identidade visual do SolarSystem: azul como cor principal, superfícies neutras.
+   Contrastes MEDIDOS no navegador (tela de login, 25/11/2026), WCAG 2.2 AA (texto: 4,5:1; bordas: 3:1):
+   - título e rótulos (slate-900 sobre branco): 17,83:1
+   - texto secundário (slate-700): 10,36:1
+   - botão "Mostrar" (blue-800): 8,82:1
+   - botão "Entrar" (branco sobre blue-700): 6,83:1
+   - mensagem e borda de erro (red-700 sobre branco): 6,42:1
+   - borda normal dos campos (slate-500 sobre branco): 4,76:1
+   Medido só na tela de login. Cada tela nova precisa ser conferida de novo. */
+@theme {
+  --font-sans: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-slate-900);
+}
+
+/* Foco SEMPRE visível para quem navega pelo teclado. */
+:focus-visible {
+  outline: 3px solid var(--color-blue-700);
+  outline-offset: 2px;
+}
